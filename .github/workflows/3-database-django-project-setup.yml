@@ -75,13 +75,13 @@ jobs:
           minimum-occurrences: 1
           case-sensitive: false
 
-      - name: Check seed script description
+      - name: Check seed script entry point
         id: check-seed-script
         continue-on-error: true
         uses: skills/action-keyphrase-checker@v2.0.0
         with:
           text-file: octofit-tracker/backend/src/scripts/seed.ts
-          keyphrase: 'Seed the octofit_db database with test data'
+          keyphrase: 'seedDatabase()'
           minimum-occurrences: 1
           case-sensitive: false
 
@@ -100,7 +100,7 @@ jobs:
                 passed: ${{ steps.check-octofit-db.outcome == 'success' }}
               - description: "Check database.ts for mongoose"
                 passed: ${{ steps.check-mongoose-config.outcome == 'success' }}
-              - description: "Check seed.ts for test data seed description"
+              - description: "Check seed.ts for seed script entry point"
                 passed: ${{ steps.check-seed-script.outcome == 'success' }}
 
       # END: Check practical exercise
