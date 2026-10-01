@@ -113,6 +113,7 @@ const seedWorkouts = [
   },
 ];
 
+/** Seed the octofit_db database with test data. */
 async function seedDatabase(): Promise<void> {
   try {
     await connectDatabase();
