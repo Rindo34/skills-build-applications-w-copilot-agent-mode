@@ -1,4 +1,5 @@
 import cors from 'cors';
+import rateLimit from 'express-rate-limit';
 import express from 'express';
 import { connectDatabase } from './config/database.js';
 import { ActivityModel } from './models/Activity.js';
@@ -17,6 +18,13 @@ const baseUrl = codespaceName
 app.use(cors());
 app.use(express.json());
 
+const apiRateLimit = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 100,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+});
+
 app.get('/api', (_request, response) => {
   response.json({
     users: `${baseUrl}/api/users`,
@@ -31,7 +39,7 @@ app.get('/api/health', (_request, response) => {
   response.json({ status: 'ok', database: 'connected', baseUrl });
 });
 
-app.get('/api/users', async (_request, response, next) => {
+app.get('/api/users', apiRateLimit, async (_request, response, next) => {
   try {
     response.json(await UserModel.find().sort({ points: -1 }).lean());
   } catch (error) {
@@ -39,7 +47,7 @@ app.get('/api/users', async (_request, response, next) => {
   }
 });
 
-app.get('/api/teams', async (_request, response, next) => {
+app.get('/api/teams', apiRateLimit, async (_request, response, next) => {
   try {
     response.json(await TeamModel.find().populate('members').sort({ name: 1 }));
   } catch (error) {
@@ -47,7 +55,7 @@ app.get('/api/teams', async (_request, response, next) => {
   }
 });
 
-app.get('/api/activities', async (_request, response, next) => {
+app.get('/api/activities', apiRateLimit, async (_request, response, next) => {
   try {
     response.json(
       await ActivityModel.find().populate('user', 'username displayName').sort({ recordedAt: -1 }).lean(),
@@ -64,7 +72,7 @@ async function startServer(): Promise<void> {
   });
 }
 
-app.get('/api/leaderboard', async (_request, response, next) => {
+app.get('/api/leaderboard', apiRateLimit, async (_request, response, next) => {
   try {
     response.json(await LeaderboardEntryModel.find().populate('team').sort({ rank: 1 }));
   } catch (error) {
@@ -72,7 +80,7 @@ app.get('/api/leaderboard', async (_request, response, next) => {
   }
 });
 
-app.get('/api/workouts', async (_request, response, next) => {
+app.get('/api/workouts', apiRateLimit, async (_request, response, next) => {
   try {
     response.json(await WorkoutModel.find().sort({ difficulty: 1, title: 1 }));
   } catch (error) {
