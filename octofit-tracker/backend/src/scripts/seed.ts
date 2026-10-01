@@ -12,7 +12,6 @@ const updateOptions = {
   runValidators: true,
   setDefaultsOnInsert: true,
 } as const;
-
 const seedUsers = [
   { username: 'alexm', displayName: 'Alex Morgan', email: 'alex.morgan@octofit.dev', points: 420 },
   { username: 'jordanl', displayName: 'Jordan Lee', email: 'jordan.lee@octofit.dev', points: 365 },
