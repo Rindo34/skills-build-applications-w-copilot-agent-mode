@@ -9,7 +9,7 @@ export async function fetchCollection(endpoint, signal) {
     throw new Error('Configura VITE_CODESPACE_NAME per collegarti all\'API.')
   }
 
-  const response = await fetch(`${API_BASE_URL}${endpoint}`, { signal })
+  const response = await fetch(endpoint, { signal })
   if (!response.ok) {
     throw new Error(`Richiesta non riuscita (${response.status}).`)
   }

@@ -1,5 +1,10 @@
 import ResourcePage from './ResourcePage.jsx'
 
+const codespaceName = import.meta.env.VITE_CODESPACE_NAME?.trim()
+const endpoint = codespaceName
+  ? `https://${codespaceName}-8000.app.github.dev/api/activities/`
+  : null
+
 const columns = [
   { key: 'user', label: 'Utente' },
   { key: 'activityType', label: 'Attività' },
@@ -10,5 +15,13 @@ const columns = [
 ]
 
 export default function Activities() {
-  return <ResourcePage title="Attività" description="Attività registrate dalla community." resource="activities" endpoint="/api/activities/" columns={columns} />
+  return (
+    <ResourcePage
+      title="Attività"
+      description="Attività registrate dalla community."
+      resource="activities"
+      endpoint={endpoint}
+      columns={columns}
+    />
+  )
 }
