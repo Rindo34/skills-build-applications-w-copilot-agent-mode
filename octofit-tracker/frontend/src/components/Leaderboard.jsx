@@ -8,5 +8,5 @@ const columns = [
 ]
 
 export default function Leaderboard() {
-  return <ResourcePage title="Classifica" description="I punteggi più alti del momento." resource="leaderboard" columns={columns} />
+  return <ResourcePage title="Classifica" description="I punteggi più alti del momento." resource="leaderboard" endpoint="/api/leaderboard/" columns={columns} />
 }

@@ -9,5 +9,5 @@ const columns = [
 ]
 
 export default function Users() {
-  return <ResourcePage title="Atleti" description="Profili e progressi della community." resource="users" columns={columns} />
+  return <ResourcePage title="Atleti" description="Profili e progressi della community." resource="users" endpoint="/api/users/" columns={columns} />
 }

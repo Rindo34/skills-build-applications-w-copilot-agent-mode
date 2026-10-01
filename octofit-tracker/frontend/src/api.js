@@ -1,15 +1,15 @@
 const codespaceName = import.meta.env.VITE_CODESPACE_NAME?.trim()
 
 export const API_BASE_URL = codespaceName
-  ? `https://${codespaceName}-8000.app.github.dev/api`
+  ? `https://${codespaceName}-8000.app.github.dev`
   : null
 
-export async function fetchCollection(resource, signal) {
+export async function fetchCollection(endpoint, signal) {
   if (!API_BASE_URL) {
     throw new Error('Configura VITE_CODESPACE_NAME per collegarti all\'API.')
   }
 
-  const response = await fetch(`${API_BASE_URL}/${resource}/`, { signal })
+  const response = await fetch(`${API_BASE_URL}${endpoint}`, { signal })
   if (!response.ok) {
     throw new Error(`Richiesta non riuscita (${response.status}).`)
   }

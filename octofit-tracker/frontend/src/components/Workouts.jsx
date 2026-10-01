@@ -9,5 +9,5 @@ const columns = [
 ]
 
 export default function Workouts() {
-  return <ResourcePage title="Allenamenti" description="Programmi pronti per il prossimo traguardo." resource="workouts" columns={columns} />
+  return <ResourcePage title="Allenamenti" description="Programmi pronti per il prossimo traguardo." resource="workouts" endpoint="/api/workouts/" columns={columns} />
 }

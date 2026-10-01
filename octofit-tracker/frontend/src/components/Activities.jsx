@@ -10,5 +10,5 @@ const columns = [
 ]
 
 export default function Activities() {
-  return <ResourcePage title="Attività" description="Attività registrate dalla community." resource="activities" columns={columns} />
+  return <ResourcePage title="Attività" description="Attività registrate dalla community." resource="activities" endpoint="/api/activities/" columns={columns} />
 }

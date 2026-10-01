@@ -7,5 +7,5 @@ const columns = [
 ]
 
 export default function Teams() {
-  return <ResourcePage title="Squadre" description="Squadre e risultati condivisi." resource="teams" columns={columns} />
+  return <ResourcePage title="Squadre" description="Squadre e risultati condivisi." resource="teams" endpoint="/api/teams/" columns={columns} />
 }
