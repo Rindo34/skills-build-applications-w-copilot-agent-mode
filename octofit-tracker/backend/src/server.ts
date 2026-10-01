@@ -1,4 +1,5 @@
 import cors from 'cors';
+import rateLimit from 'express-rate-limit';
 import express from 'express';
 import { connectDatabase } from './config/database.js';
 import { ActivityModel } from './models/Activity.js';
@@ -10,24 +11,43 @@ import { WorkoutModel } from './models/Workout.js';
 const app = express();
 const port = Number(process.env.PORT || 8000);
 const codespaceName = process.env.CODESPACE_NAME;
-const baseUrl = codespaceName ? `https://${codespaceName}-8000.app.github.dev` : `http://localhost:${port}`;
+const baseUrl = codespaceName
+  ? `https://${codespaceName}-8000.app.github.dev`
+  : `http://localhost:${port}`;
 
 app.use(cors());
 app.use(express.json());
+
+const apiRateLimit = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 100,
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+});
+
+app.get('/api', (_request, response) => {
+  response.json({
+    users: `${baseUrl}/api/users`,
+    activities: `${baseUrl}/api/activities`,
+    teams: `${baseUrl}/api/teams`,
+    leaderboard: `${baseUrl}/api/leaderboard`,
+    workouts: `${baseUrl}/api/workouts`,
+  });
+});
 
 app.get('/api/health', (_request, response) => {
   response.json({ status: 'ok', database: 'connected', baseUrl });
 });
 
-app.get('/api/users', async (_request, response, next) => {
+app.get('/api/users', apiRateLimit, async (_request, response, next) => {
   try {
-    response.json(await UserModel.find().sort({ displayName: 1 }));
+    response.json(await UserModel.find().sort({ points: -1 }).lean());
   } catch (error) {
     next(error);
   }
 });
 
-app.get('/api/teams', async (_request, response, next) => {
+app.get('/api/teams', apiRateLimit, async (_request, response, next) => {
   try {
     response.json(await TeamModel.find().populate('members').sort({ name: 1 }));
   } catch (error) {
@@ -35,15 +55,24 @@ app.get('/api/teams', async (_request, response, next) => {
   }
 });
 
-app.get('/api/activities', async (_request, response, next) => {
+app.get('/api/activities', apiRateLimit, async (_request, response, next) => {
   try {
-    response.json(await ActivityModel.find().populate('user').sort({ recordedAt: -1 }));
+    response.json(
+      await ActivityModel.find().populate('user', 'username displayName').sort({ recordedAt: -1 }).lean(),
+    );
   } catch (error) {
     next(error);
   }
 });
 
-app.get('/api/leaderboard', async (_request, response, next) => {
+async function startServer(): Promise<void> {
+  await connectDatabase();
+  app.listen(port, '0.0.0.0', () => {
+    console.log(`OctoFit API listening on port ${port} (${baseUrl}/api)`);
+  });
+}
+
+app.get('/api/leaderboard', apiRateLimit, async (_request, response, next) => {
   try {
     response.json(await LeaderboardEntryModel.find().populate('team').sort({ rank: 1 }));
   } catch (error) {
@@ -51,7 +80,7 @@ app.get('/api/leaderboard', async (_request, response, next) => {
   }
 });
 
-app.get('/api/workouts', async (_request, response, next) => {
+app.get('/api/workouts', apiRateLimit, async (_request, response, next) => {
   try {
     response.json(await WorkoutModel.find().sort({ difficulty: 1, title: 1 }));
   } catch (error) {
@@ -63,14 +92,6 @@ app.use((error: Error, _request: express.Request, response: express.Response, _n
   console.error('API error:', error);
   response.status(500).json({ error: 'Internal server error' });
 });
-
-async function startServer() {
-  await connectDatabase();
-  app.listen(port, '0.0.0.0', () => {
-    console.log(`OctoFit API listening on port ${port}`);
-    console.log(`OctoFit API base URL: ${baseUrl}`);
-  });
-}
 
 startServer().catch((error: unknown) => {
   console.error('Failed to start OctoFit API:', error);

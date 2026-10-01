@@ -12,7 +12,6 @@ const updateOptions = {
   runValidators: true,
   setDefaultsOnInsert: true,
 } as const;
-
 const seedUsers = [
   { username: 'alexm', displayName: 'Alex Morgan', email: 'alex.morgan@octofit.dev', points: 420 },
   { username: 'jordanl', displayName: 'Jordan Lee', email: 'jordan.lee@octofit.dev', points: 365 },
@@ -113,9 +112,7 @@ const seedWorkouts = [
   },
 ];
 
-/**
- * Seed the octofit_db database with test data
- */
+/** Seed the octofit_db database with test data. */
 async function seedDatabase(): Promise<void> {
   try {
     await connectDatabase();
@@ -178,20 +175,19 @@ async function seedDatabase(): Promise<void> {
       WorkoutModel.countDocuments(),
     ]);
 
-    console.log('Seed the octofit_db database with test data');
-    console.log('Database seeding complete:', {
+    console.log('OctoFit seed complete:', {
       users: usersCount,
       teams: teamsCount,
       activities: activitiesCount,
       leaderboardEntries: leaderboardCount,
       workouts: workoutsCount,
     });
-  } catch (error: unknown) {
-    console.error('Error seeding database:', error);
-    process.exitCode = 1;
   } finally {
     await mongoose.disconnect();
   }
 }
 
-seedDatabase();
+seedDatabase().catch((error: unknown) => {
+  console.error('Error seeding database:', error);
+  process.exitCode = 1;
+});

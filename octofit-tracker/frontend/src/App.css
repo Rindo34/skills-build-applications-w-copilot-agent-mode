@@ -1,0 +1,154 @@
+.app-shell {
+  min-height: 100svh;
+  background:
+    radial-gradient(ellipse at 85% 0%, rgba(215, 230, 189, 0.55), transparent 35rem),
+    #f5f7f2;
+}
+
+.app-header {
+  background: #183b35;
+  color: #f7f8f2;
+}
+
+.app-container {
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: 28px;
+}
+
+.app-header .app-container {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: inherit;
+  font-size: 20px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.brand-mark {
+  width: 32px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #d6e89b;
+  color: #183b35;
+  font-family: Georgia, serif;
+  font-size: 20px;
+}
+
+.app-nav {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  min-height: 76px;
+}
+
+.app-nav .nav-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  border-bottom: 3px solid transparent;
+  color: rgba(247, 248, 242, 0.76);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.app-nav .nav-link:hover,
+.app-nav .nav-link.active {
+  border-bottom-color: #d6e89b;
+  color: #fff;
+}
+
+.app-main {
+  padding-block: 44px 64px;
+}
+
+.page-heading {
+  margin-bottom: 28px;
+}
+
+.page-heading h1 {
+  margin: 0 0 6px;
+  color: #183b35;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.page-heading p {
+  margin: 0;
+  color: #62736c;
+  font-size: 14px;
+}
+
+.data-surface {
+  overflow: hidden;
+  border: 1px solid #dce3d9;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.data-surface .table {
+  margin: 0;
+  vertical-align: middle;
+}
+
+.data-surface th {
+  padding: 14px 18px;
+  background: #edf2e9;
+  color: #52645a;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.data-surface td {
+  padding: 15px 18px;
+  color: #2c443b;
+  font-size: 14px;
+}
+
+.empty-state {
+  padding: 28px;
+  color: #62736c;
+  font-size: 14px;
+}
+
+@media (max-width: 720px) {
+  .app-container {
+    padding-inline: 18px;
+  }
+
+  .app-header .app-container {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0;
+    padding-top: 16px;
+  }
+
+  .app-nav {
+    width: 100%;
+    min-height: 48px;
+    overflow-x: auto;
+  }
+
+  .app-nav .nav-link {
+    flex: 0 0 auto;
+    padding-inline: 10px;
+  }
+
+  .app-main {
+    padding-top: 32px;
+  }
+}
