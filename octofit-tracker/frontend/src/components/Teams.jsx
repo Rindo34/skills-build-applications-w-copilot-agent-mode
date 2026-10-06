@@ -7,6 +7,8 @@ const endpoint = codespaceName
 
 const columns = [
   { key: 'name', label: 'Squadra' },
+  { key: 'schedule', label: 'Orario' },
+  { key: 'maxAttendance', label: 'Max partecipanti' },
   { key: 'members', label: 'Membri' },
   { key: 'points', label: 'Punti' },
 ]

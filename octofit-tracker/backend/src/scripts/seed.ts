@@ -34,6 +34,15 @@ const seedTeams = [
     memberEmails: ['casey.rivera@octofit.dev', 'taylor.kim@octofit.dev'],
     points: 3015,
   },
+  {
+    slug: 'manga-maniacs',
+    name: 'Manga Maniacs',
+    description: 'Explore the fantastic stories of the most interesting characters from Japanese Manga (graphic novels).',
+    schedule: 'Tuesdays at 7pm',
+    maxAttendance: 15,
+    memberEmails: [],
+    points: 0,
+  },
 ];
 
 const seedActivities = [
